@@ -1,0 +1,20 @@
+{
+	"name": "rag",
+	"private": true,
+	"packageManager": "pnpm@10.32.1",
+	"scripts": {
+		"dev": "pnpm --filter backend dev",
+		"start": "pnpm --filter backend start",
+		"mastra:studio": "pnpm --filter backend mastra:studio",
+		"format": "biome format --write .",
+		"format:check": "biome format .",
+		"lint": "oxlint .",
+		"lint:fix": "oxlint --fix .",
+		"typecheck": "pnpm -r --if-present typecheck",
+		"check": "pnpm typecheck && pnpm lint && pnpm format:check"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.5.4",
+		"oxlint": "1.74.0"
+	}
+}
