@@ -8,13 +8,13 @@
 		"mastra:studio": "pnpm --filter backend mastra:studio",
 		"format": "biome format --write .",
 		"format:check": "biome format .",
-		"lint": "oxlint .",
-		"lint:fix": "oxlint --fix .",
+		"lint": "biome lint .",
+		"lint:fix": "biome lint --write .",
 		"typecheck": "pnpm -r --if-present typecheck",
-		"check": "pnpm typecheck && pnpm lint && pnpm format:check"
+		"check": "biome check . && pnpm typecheck",
+		"check:fix": "biome check --write ."
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.5.4",
-		"oxlint": "1.74.0"
+		"@biomejs/biome": "2.5.4"
 	}
 }
