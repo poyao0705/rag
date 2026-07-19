@@ -1,3 +1,6 @@
+import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
+
 import { Mastra } from "@mastra/core/mastra";
 import { MastraCompositeStore } from "@mastra/core/storage";
 import { DuckDBStore } from "@mastra/duckdb";
@@ -17,6 +20,9 @@ import {
 } from "./scorers/weather-scorer";
 import { weatherWorkflow } from "./workflows/weather-workflow";
 
+const libsqlPath = resolve(import.meta.dirname, "../../mastra.db");
+const duckdbPath = resolve(import.meta.dirname, "../../mastra.duckdb");
+
 export const mastra = new Mastra({
 	workflows: { weatherWorkflow },
 	agents: { weatherAgent },
@@ -31,11 +37,13 @@ export const mastra = new Mastra({
 			id: "mastra-storage",
 			// Uses a hosted database when deployed (mastra env db create --kind turso),
 			// and a local file during development.
-			url: process.env.TURSO_DATABASE_URL ?? "file:./mastra.db",
+			url: process.env.TURSO_DATABASE_URL ?? pathToFileURL(libsqlPath).href,
 			authToken: process.env.TURSO_AUTH_TOKEN,
 		}),
 		domains: {
-			observability: await new DuckDBStore().getStore("observability"),
+			observability: await new DuckDBStore({ path: duckdbPath }).getStore(
+				"observability",
+			),
 		},
 	}),
 	logger: new PinoLogger({
